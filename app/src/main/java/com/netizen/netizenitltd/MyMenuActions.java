@@ -125,7 +125,7 @@ public class MyMenuActions extends Activity{
 
             return new AlertDialog.Builder(context)
                     .setTitle(R.string.developer_company_name)
-                    .setIcon(R.drawable.button_alert_icon)
+                    .setIcon(R.drawable.netizen_logo_small)
                     .setMessage(Html.fromHtml("<span>Developed by: Netizen it Ltd.</span>" +
                             "<br/><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dhaka, Bangladesh</span>" +
