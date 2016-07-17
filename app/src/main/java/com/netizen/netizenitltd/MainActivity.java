@@ -1,14 +1,11 @@
 package com.netizen.netizenitltd;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
@@ -20,7 +17,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,9 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     WebView webView_main;
 
-    Button button_moreApps,
-            button_rateUs,
-            button_aboutUs;
+    ImageButton imageButton_back,
+            imageButton_forward;
 
     final String url = "http://www.netizenbd.com/";
 
@@ -49,12 +46,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          */
         webView_main = (WebView) findViewById(R.id.webView_main);
 
-        button_moreApps = (Button) findViewById(R.id.button_moreApps);
-        button_rateUs = (Button) findViewById(R.id.button_rateUs);
-        button_aboutUs = (Button) findViewById(R.id.button_aboutUs);
-        button_moreApps.setOnClickListener(this);
-        button_rateUs.setOnClickListener(this);
-        button_aboutUs.setOnClickListener(this);
+
+        imageButton_back = (ImageButton) findViewById(R.id.imageButton_back);
+        imageButton_forward = (ImageButton) findViewById(R.id.imageButton_forward);
+        imageButton_back.setOnClickListener(this);
+        imageButton_forward.setOnClickListener(this);
 
         webView_main.loadUrl(url);
 
@@ -80,15 +76,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         webSettings.setEnableSmoothTransition(true);
 
 
-        // WebChromeClient use Before HTML loading to support html5 video
-        webView_main.setWebChromeClient(new WebChromeClient() {
-        });
+//        // Add these lines(setWebChromeClient) before loading HTML content to your WebView to show youtube video
+//        webView_main.setWebChromeClient(new WebChromeClient() {
+//        });
 
-        webView_main.loadUrl(url); // To access assets folder file:///android_asset/*
         webView_main.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (url.startsWith("market://") || url.startsWith("tel:") || url.startsWith("mailto:")) { //url.startsWith("vnd:youtube")||
+                if (url.startsWith("market://") || url.startsWith("tel:") || url.startsWith("mailto:") || url.startsWith("vnd:youtube")) { //url.startsWith("vnd:youtube")||
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
                     startActivity(intent);
@@ -99,11 +94,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        webView_main.loadUrl(url); // To access assets folder file:///android_asset/*
 
 
+        //  Progress bar
+        final ProgressBar Pbar;
+        Pbar = (ProgressBar) findViewById(R.id.progressBar1);
+
+        webView_main.setWebChromeClient(new WebChromeClient() {
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress < 100 && Pbar.getVisibility() == ProgressBar.GONE) {
+                    Pbar.setVisibility(ProgressBar.VISIBLE);
+                }
+                Pbar.setProgress(progress);
+                if (progress == 100) {
+                    Pbar.setVisibility(ProgressBar.GONE);
+                }
+            }
+        });
 
 
     } // end of onCreate
+
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("Want to exit?")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).create().show();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -174,17 +199,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.button_moreApps:
-                Toast.makeText(MainActivity.this, "More apps", Toast.LENGTH_SHORT).show();
+            case R.id.imageButton_back:
+                webView_main.goBack();
                 break;
 
-            case R.id.button_rateUs:
-                Toast.makeText(MainActivity.this, "Rate us", Toast.LENGTH_SHORT).show();
+            case R.id.imageButton_forward:
+                webView_main.goForward();
                 break;
 
-            case R.id.button_aboutUs:
-                Toast.makeText(MainActivity.this, "About us", Toast.LENGTH_SHORT).show();
-                break;
         }
 
     }
@@ -192,15 +214,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onPause() {
-        super.onPause();
         webView_main.onPause(); // pause the video which is playing with WebView
+        super.onPause();
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         webView_main.onResume(); // implement the onResume() method or the second time don't work
+        super.onResume();
     }
+
 
     // Go to previous page when pressing back button
     @Override
@@ -211,8 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if ((keyCode == KeyEvent.KEYCODE_BACK) && webView_main.canGoBack()) {
                         webView_main.goBack();
                     } else {
-                        finish();
-                        webView_main.destroy();
+                        MyMenuActions.MenuExit(this).show();
                     }
                     return true;
             }
@@ -220,23 +242,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    public void onBackPressed() {
-
-            // Alert before exit
-            new AlertDialog.Builder(this)
-                    .setMessage("Want to exit?")
-                    .setNegativeButton("No", null)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Activity a = new Activity();
-                            a.finish(); // finish current activity
-                            System.exit(0);
-                        }
-                    }).create().show();
-
-            super.onBackPressed();
-
-    }
 }

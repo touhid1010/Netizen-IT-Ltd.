@@ -125,12 +125,12 @@ public class MyMenuActions extends Activity{
 
             return new AlertDialog.Builder(context)
                     .setTitle(R.string.developer_company_name)
-                    .setIcon(R.drawable.button_alert_icon) // TODO make change
-                    .setMessage(Html.fromHtml("<span>Developer: Md. Touhidul Islam</span>" +
+                    .setIcon(R.drawable.button_alert_icon)
+                    .setMessage(Html.fromHtml("<span>Developed by: Netizen it Ltd.</span>" +
                             "<br/><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
-                            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dhaka, Bangladesh</span>" +
+                            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dhaka, Bangladesh</span>" +
                             "<br/><br/><span>Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; springapidev@gmail.com</span>" +
-                            "<br/><span>Facebook: <a href=\"https://www.facebook.com/touhidapps\">fb.com/TouhidApps</a></span>" +
+                            "<br/><span>Facebook: <a href=\"https://www.facebook.com/netizenitltd/\">fb.com/netizenitltd/</a></span>" +
                             "<br/><br/><span>Thank you.</span>" +
                             "<br/> "))
                     .setCancelable(true)
