@@ -130,7 +130,7 @@ public class MyMenuActions extends Activity{
                             "<br/><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dhaka, Bangladesh</span>" +
                             "<br/><br/><span>Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; springapidev@gmail.com</span>" +
-                            "<br/><span>Facebook: <a href=\"https://www.facebook.com/netizenitltd/\">fb.com/netizenitltd/</a></span>" +
+                            "<br/><span>Facebook: <a href=\"https://www.facebook.com/netizenitltd\">fb.com/netizenitltd/</a></span>" +
                             "<br/><br/><span>Thank you.</span>" +
                             "<br/> "))
                     .setCancelable(true)

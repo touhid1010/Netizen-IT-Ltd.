@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     @Override
     public void onPause() {
         webView_main.onPause(); // pause the video which is playing with WebView
