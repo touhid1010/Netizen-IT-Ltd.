@@ -2,6 +2,7 @@ package com.netizen.netizenitltd;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             button_rateUs,
             button_aboutUs;
 
-    final String url = "http://www.google.com";
+    final String url = "http://www.netizenbd.com/";
 
 
     @Override
@@ -114,8 +117,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_feedback) {
+            Intent intent = MyMenuActions.MenuFeedback();
+            startActivity(Intent.createChooser(intent, "Send Feedback:"));
+
+            return true;
+        }
+
+        if (id == R.id.action_rate) {
+            Intent intent = MyMenuActions.MenuRate(MainActivity.this);
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(getApplicationContext(), R.string.toast_google_play_not_installed, Toast.LENGTH_LONG).show();
+            }
+
+            return true;
+        }
+
+        if (id == R.id.action_share) {
+            startActivity(MyMenuActions.MenuShare(MainActivity.this));
+
+            return true;
+        }
+
+        if (id == R.id.action_moreApps) {
+            Intent intent = MyMenuActions.MenuMoreApps();
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(getApplicationContext(), R.string.toast_google_play_not_installed, Toast.LENGTH_LONG).show();
+            }
+
+            return true;
+        }
+
+        if (id == R.id.action_about) {
+
+            AlertDialog alertDialog = MyMenuActions.MenuAbout(this);
+            alertDialog.show();
+            ((TextView) alertDialog.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance()); // to make clickable link
+
+            return true;
+        }
+
+        if (id == R.id.action_exit) {
+            MyMenuActions.MenuExit(this).show();
+
             return true;
         }
 
@@ -172,4 +220,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void onBackPressed() {
+
+            // Alert before exit
+            new AlertDialog.Builder(this)
+                    .setMessage("Want to exit?")
+                    .setNegativeButton("No", null)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Activity a = new Activity();
+                            a.finish(); // finish current activity
+                            System.exit(0);
+                        }
+                    }).create().show();
+
+            super.onBackPressed();
+
+    }
 }
