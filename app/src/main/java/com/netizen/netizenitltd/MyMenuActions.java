@@ -9,6 +9,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.view.Gravity;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * Created by touhid on 7/17/2016.
@@ -122,7 +127,7 @@ public class MyMenuActions extends Activity {
                         "<br/><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
                         "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Dhaka, Bangladesh</span>" +
                         "<br/><br/><span>Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; springapidev@gmail.com</span>" +
-                        "<br/><span>Facebook: <a href=\"https://www.facebook.com/netizenitltd\">fb.com/netizenitltd/</a></span>" +
+                        "<br/><span>Facebook: <a href=\"https://www.facebook.com/netizenitltd\">fb.com/netizenitltd</a></span>" +
                         "<br/><br/><span>Thank you.</span>" +
                         "<br/> "))
                 .setCancelable(true)
@@ -133,16 +138,39 @@ public class MyMenuActions extends Activity {
 
     public static AlertDialog MenuContactUs(Context context) {
 
+        LinearLayout layoutMain = new LinearLayout(context);
+        layoutMain.setOrientation(LinearLayout.VERTICAL);
+        layoutMain.setGravity(Gravity.CENTER);
+
+
+        ImageView image = new ImageView(context);
+        image.setImageResource(R.drawable.netizen_logo_for_alert_dialog);
+        image.setScaleType(ImageView.ScaleType.CENTER);
+
+        TextView tv = new TextView(context);
+        tv.setText(Html.fromHtml("<span>Flat-6/A, Plot-398/A, Mohakhali DOHS,<br/>Dhaka, Bangladesh.</span>" +
+                "<br/><br/><span>Call Us:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href=\"tel:+8801612223601\">+8801612223601</a></span>" +
+                "<br/><br/><span>Email: &nbsp;&nbsp; <a href=\"mailto:springapidev@gmail.com?Subject=Hello%20Netizen%20it\">springapidev@gmail.com</a></span>" +
+                "<br/><br/><span>Facebook: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href=\"https://www.facebook.com/netizenitltd\">fb.com/netizenitltd</a></span>" +
+                "<br/><br/><span></span>" +
+                "<br/> "));
+        tv.setPadding(0,30,0,0);
+        tv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        tv.setGravity(Gravity.CENTER);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+
+
+        layoutMain.addView(image); // direct to main linear layout
+        layoutMain.addView(tv);
+
+
         return new AlertDialog.Builder(context)
-                .setTitle(R.string.developer_company_name)
-                .setIcon(R.drawable.netizen_logo_small)
-                .setMessage(Html.fromHtml("<span>Call Us:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href=\"tel:+8801612223601\">+8801612223601</a></span>" +
-                        "<br/><br/><span>Email: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href=\"mailto:springapidev@gmail.com?Subject=Hello%20Netizen%20it\">springapidev@gmail.com</a></span>" +
-                        "<br/><br/><span>Facebook: <a href=\"https://www.facebook.com/netizenitltd\">fb.com/netizenitltd</a></span>" +
-                        "<br/><br/><span>Thank you.</span>" +
-                        "<br/> "))
+//                .setTitle(R.string.developer_company_name)
+//                .setIcon(R.drawable.netizen_logo_small)
+                .setView(layoutMain)
                 .setCancelable(true)
                 .setPositiveButton("Ok", null) // no need to onClickListener so null used
+                .setMessage(Html.fromHtml(" "))
                 .create();
 
     }

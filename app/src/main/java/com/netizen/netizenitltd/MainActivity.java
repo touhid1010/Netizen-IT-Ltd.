@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
@@ -112,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-
         /**
          * Bottom bar
          */
@@ -121,26 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //      a.myBottomBarMethod(savedInstanceState, mBottomBar);
 
 
-
-
-
-
-
     } // end of onCreate
 
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage("Want to exit?")
-                .setNegativeButton("No", null)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                }).create().show();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -245,7 +228,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if ((keyCode == KeyEvent.KEYCODE_BACK) && webView_main.canGoBack()) {
                         webView_main.goBack();
                     } else {
-                        MyMenuActions.MenuExit(this).show();
+                        // Like onBackPressed
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                        builder.setMessage("Want to exit?");
+                        builder.setNegativeButton("No", null);
+                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.show();
+                        TextView messageText = (TextView) dialog.findViewById(android.R.id.message);
+                        messageText.setGravity(Gravity.CENTER);
+                        dialog.show();
                     }
                     return true;
             }
@@ -332,8 +330,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBottomBar.mapColorForTab(2, "#7B1FA2");
 //        mBottomBar.mapColorForTab(3, "#FF5252");
 //        mBottomBar.mapColorForTab(4, "#FF9800");
-
-
 
 
         // Use the dark theme.
