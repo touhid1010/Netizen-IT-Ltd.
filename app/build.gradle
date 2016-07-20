@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "com.netizen.netizenitltd"
+        applicationId "com.netizenbd.netizenitltd"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
